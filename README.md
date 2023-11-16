@@ -14,7 +14,7 @@ The project includes the following files:
 
 
 ## Data Exploration
-The **Data Exploration.sql** file contains SQL queries for exploring the Covid-19 data. The following queries have been used in this project:
+The **Covid Portfoli Project.sql** file contains SQL queries for exploring the Covid-19 data. The following queries have been used in this project:
 
 These SQL queries are used to explore and analyze COVID-19 data for a data analysis project. They were executed in Microsoft SQL Server Management Studio and were used to generate visualizations and insights about the COVID-19 pandemic.
 
