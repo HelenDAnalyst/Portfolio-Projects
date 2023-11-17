@@ -122,29 +122,31 @@ where continent is not null
 order by 1,2
 
 
--- Total Population vs Total Tests
+-- Total Population vs Tests
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_tests
-SUM(CAST(vac.new_tests AS INT)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date)
+, SUM(CAST(vac.new_tests AS INT)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date)
 AS RollingPeopleTested
 From PortfolioProject..CovidDeaths dea
 Join PortfolioProject..CovidVaccinations vac
 	On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null 
+where new_tests is not null
+AND Dea.continent IS NOT NULL
 order by 1,2,3
 
 
 -- Total Population vs Vaccinations
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
-SUM(CAST(vac.new_vaccinations AS INT)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date)
+, SUM(CAST(vac.new_vaccinations AS BIGINT)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date)
 AS RollingPeopleVaccinated
 From PortfolioProject..CovidDeaths dea
 Join PortfolioProject..CovidVaccinations vac
 	On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null 
+WHERE new_vaccinations is not null
+AND dea.continent is not null 
 order by 1,2,3
 
 
@@ -334,6 +336,7 @@ These two queries extract global COVID-19 data.
 -----------------------------------------------------------------------------------
 
 #### Total population vs tests
+
 ```sql
 --Total population vs tests 
 
@@ -344,7 +347,8 @@ FROM PortfolioProject..CovidDeaths dea
 JOIN  PortfolioProject..CovidVaccinations vac 
 ON dea.location=vac.location
 AND dea.date=vac.date
-WHERE dea.continent IS NOT NULL
+WHERE new_tests IS NOT NULL
+AND Dea.continent IS NOT NULL
 ORDER BY 1,2,3
 ```
 
@@ -359,11 +363,12 @@ FROM PortfolioProject..CovidDeaths dea
 JOIN  PortfolioProject..CovidVaccinations vac 
 ON dea.location=vac.location
 AND dea.date=vac.date
-WHERE dea.continent IS NOT NULL
+WHERE new_vaccinations IS NOT NULL
+AND Dea.continent IS NOT NULL
 ORDER BY 1,2,3
 ```
 
-This query compares the total population of a location with the number of people who have been vaccinated. It uses the SUM function with the OVER clause to calculate the rolling sum of new_vaccinations for each location. The result is ordered by location and date.
+These queries compares the total population of a location with the number of people who have been tested and vaccinated respectively. It uses the SUM function with the OVER clause to calculate the rolling sum of new_tests and new_vaccinations for each location. The result is ordered by location and date.
 
 <img src = "/Screenshots/sql-11.JPG">
 
